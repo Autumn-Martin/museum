@@ -75,18 +75,28 @@ class Museum
     count_hash
   end
 
-  def exhibits_by_attendees
-    # patrons
-    # interests for patrons
-    # currently have array of strings
-    # iterate over interests
-    # want to return an array of hashes
+  def sorted_interest_count
+    interest_count.sort_by { |interest, count| count }.reverse
+  end
 
-    # find a exhibit where the key is the interest
-    interests = get_interests
-    interests.map do |interest|
-      get_exhibit_for_interest(interest)
+  def exhibit_with_name(exhibit, name)
+
+  end
+
+  def get_exhibit(name)
+    @exhibits.each do |exhibit|
+      if exhibit.keys.include?(name)
+        return exhibit
+      end
     end
+  end
+
+  def exhibits_by_attendees
+    exhibit_array = []
+    sorted_interest_count.each do |interest_array|
+      exhibit_array << get_exhibit(interest_array[0])
+    end
+    exhibit_array
   end
 
   def get_exhibit_for_interest(interest)

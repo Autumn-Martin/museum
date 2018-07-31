@@ -78,7 +78,6 @@ class MuseumTest < Minitest::Test
   end
 
   def test_it_can_sort_exhibits_by_number_of_patrons
-    skip
     @dmns.add_exhibit("Dead Sea Scrolls", 10)
     @dmns.add_exhibit("Gems and Minerals", 0)
     @dmns.add_exhibit("Imax", 20)
@@ -95,7 +94,9 @@ class MuseumTest < Minitest::Test
     @dmns.admit(bob)
     @dmns.admit(sally)
 
-    assert_equal [], @dmns.exhibits_by_attendees
+    expected = [{"Dead Sea Scrolls" => 10}, {"Gems and Minerals" => 0}]
+
+    assert_equal expected, @dmns.exhibits_by_attendees
   end
 
   #####
