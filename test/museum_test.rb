@@ -1,6 +1,7 @@
 require "minitest/autorun"
 require "minitest/pride"
 require "./lib/museum"
+require "pry"
 
 class MuseumTest < Minitest::Test
   def setup
@@ -77,6 +78,7 @@ class MuseumTest < Minitest::Test
   end
 
   def test_it_can_sort_exhibits_by_number_of_patrons
+    skip
     @dmns.add_exhibit("Dead Sea Scrolls", 10)
     @dmns.add_exhibit("Gems and Minerals", 0)
     @dmns.add_exhibit("Imax", 20)
@@ -95,4 +97,31 @@ class MuseumTest < Minitest::Test
 
     assert_equal [], @dmns.exhibits_by_attendees
   end
+
+  #####
+  def test_it_can_return_a_hash_with_interest_count
+    @dmns.add_exhibit("Dead Sea Scrolls", 10)
+    @dmns.add_exhibit("Gems and Minerals", 0)
+    @dmns.add_exhibit("Imax", 20)
+
+    bob = Patron.new("Bob")
+
+    bob.add_interest("Dead Sea Scrolls")
+    bob.add_interest("Gems and Minerals")
+
+    sally = Patron.new("Sally")
+
+    sally.add_interest("Dead Sea Scrolls")
+
+    @dmns.admit(bob)
+    @dmns.admit(sally)
+
+    expected = { 
+                "Dead Sea Scrolls" => 2,
+                "Gems and Minerals" => 1
+               }
+
+    assert_equal expected, @dmns.interest_count
+  end
+  #####
 end

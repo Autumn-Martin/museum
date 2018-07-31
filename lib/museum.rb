@@ -1,4 +1,5 @@
 require "./lib/patron"
+
 class Museum
   attr_reader :name, :exhibits, :patrons
   def initialize(name)
@@ -60,6 +61,18 @@ class Museum
     patrons_interested_in_exhibit(exhibit).map do |patron|
       patron.name
     end
+  end
+
+  def interest_count
+    count_hash = {}
+    get_interests.each do |interest|
+      if count_hash[interest]
+        count_hash[interest] += 1
+      else
+        count_hash[interest] = 1
+      end
+    end
+    count_hash
   end
 
   def exhibits_by_attendees
