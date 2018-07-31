@@ -124,5 +124,32 @@ class MuseumTest < Minitest::Test
 
     assert_equal expected, @dmns.interest_count
   end
+
+  def test_it_removes_unpopular_exhibits
+    @dmns.add_exhibit("Dead Sea Scrolls", 10)
+    @dmns.add_exhibit("Gems and Minerals", 0)
+
+    bob = Patron.new("Bob")
+
+    bob.add_interest("Dead Sea Scrolls")
+    bob.add_interest("Gems and Minerals")
+
+    sally = Patron.new("Sally")
+
+    sally.add_interest("Dead Sea Scrolls")
+
+    @dmns.admit(bob)
+    @dmns.admit(sally)
+
+    before = [{ "Dead Sea Scrolls" => 10 }, { "Gems and Minerals" => 0 }]
+
+    assert_equal before, @dmns.exhibits
+
+    @dmns.remove_unpopular_exhibits(2)
+
+    after = [{ "Dead Sea Scrolls" => 10 }]
+
+    assert_equal after, @dmns.exhibits
+  end
   #####
 end

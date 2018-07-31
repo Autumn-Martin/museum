@@ -79,10 +79,6 @@ class Museum
     interest_count.sort_by { |interest, count| count }.reverse
   end
 
-  def exhibit_with_name(exhibit, name)
-
-  end
-
   def get_exhibit(name)
     @exhibits.each do |exhibit|
       if exhibit.keys.include?(name)
@@ -97,6 +93,23 @@ class Museum
       exhibit_array << get_exhibit(interest_array[0])
     end
     exhibit_array
+  end
+
+  def interests_under_threshold(threshold)
+    raw = sorted_interest_count.select do |interest_array|
+      interest_array[1] < threshold
+    end
+    raw.map do |interest|
+      interest[0]
+    end.flatten
+  end
+
+  def remove_unpopular_exhibits(threshold)
+    interests_under_threshold(threshold).each do |interest|
+      @exhibits.each do |exhibit|
+        @exhibits.delete(exhibit) if exhibit[interest]
+      end
+    end
   end
 
   def get_exhibit_for_interest(interest)
